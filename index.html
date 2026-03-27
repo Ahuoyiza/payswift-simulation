@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaySwift Simulation — Technical Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div id="cursor">
+  <svg id="cursor-svg" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Main arrow shape: tip at top-left (0,0), pointing up-left naturally -->
+    <path d="M4 2 L4 40 L13 30 L20 46 L26 43 L19 27 L33 27 Z" fill="#CDFF00" stroke="#1a1a5e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <!-- Orange accent dot on tail -->
+    <circle cx="28" cy="30" r="3.5" fill="#FF6B00" stroke="#1a1a5e" stroke-width="1.5"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">PaySwift<br>Simulation</div>
+    <div class="sub">Technical Foundations</div>
+  </div>
+
+  <div class="nav-section-label">Start here</div>
+  <a class="nav-item active" data-page="overview" href="#">
+    <div class="nav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    </div>
+    Simulation Overview
+  </a>
+  <a class="nav-item" data-page="howto" href="#">
+    <div class="nav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    How to Use
+  </a>
+
+  <div class="nav-section-label">The Journey</div>
+  <a class="nav-item" data-page="phase1" href="#">
+    <div class="phase-dot">1</div>
+    Project Kickoff
+  </a>
+  <a class="nav-item" data-page="phase2" href="#">
+    <div class="phase-dot">2</div>
+    Frontend Build
+  </a>
+  <a class="nav-item" data-page="phase3" href="#">
+    <div class="phase-dot">3</div>
+    Backend Build
+  </a>
+  <a class="nav-item" data-page="phase4" href="#">
+    <div class="phase-dot">4</div>
+    Database & Data
+  </a>
+  <a class="nav-item" data-page="phase5" href="#">
+    <div class="phase-dot">5</div>
+    Security
+  </a>
+  <a class="nav-item" data-page="phase6" href="#">
+    <div class="phase-dot">6</div>
+    API Integration
+  </a>
+
+  <div class="nav-section-label">About</div>
+  <a class="nav-item" data-page="accred" href="#">
+    <div class="nav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M8 12l-4 8h16l-4-8"/></svg>
+    </div>
+    Accreditation
+  </a>
+
+  <div class="sidebar-footer">Created for Treford students<br>© 2025 Sophia Abubakar</div>
+</nav>
+
+<!-- ═══════════════════ MAIN CONTENT ═══════════════════ -->
+<main id="main">
+
+<!-- ══ PAGE: OVERVIEW ══ -->
+<section class="page active" id="page-overview">
+  <div class="page-header">
+    <div class="page-tag">Simulation</div>
+    <h1 class="page-title">The PaySwift<br>Simulation</h1>
+    <p class="page-subtitle">Follow Ada and Morgan as they build a peer-to-peer money transfer feature from scratch</p>
+  </div>
+
+  <div class="overview-hero">
+    <!-- User Story -->
+    <div class="user-story-box">
+      <div class="qs-mark">"</div>
+      <div class="page-tag orange" style="margin-bottom:12px;">User Story</div>
+      <div class="user-story-text">"As a user, I want to send money to another user instantly so that I can split bills with friends."</div>
+      <div class="user-story-meta">
+        <div class="meta-pill">10,000 txns/day target</div>
+        <div class="meta-pill">&lt; 3 sec transfer</div>
+        <div class="meta-pill">&lt; 0.1% failure rate</div>
+        <div class="meta-pill">24/7 availability</div>
+        <div class="meta-pill">₦100 – ₦1,000,000</div>
+        <div class="meta-pill">NGN currency</div>
+      </div>
+    </div>
+
+    <!-- Context -->
+    <div class="card">
+      <div class="card-title">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73L13 2.27a2 2 0 00-2 0L4 6.27A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        </div>
+        Context
+      </div>
+      <p style="font-size:0.82rem;line-height:1.65;color:rgba(26,26,94,0.75);margin-bottom:14px;">PaySwift is a fintech startup building a mobile payments app for the Nigerian market. The product team needs to ship a P2P money transfer feature within 6 weeks. Ada (engineering) and Morgan (product) are working in parallel.</p>
+      <p style="font-size:0.82rem;line-height:1.65;color:rgba(26,26,94,0.75);">Your instructor walks through what Ada builds at each phase. <strong style="color:var(--navy)">Your job is to contribute what Morgan — the PM — should be doing at every step.</strong></p>
+    </div>
+  </div>
+
+  <!-- Characters -->
+  <div class="section-divider">
+    <div class="section-divider-line"></div>
+    <div class="section-divider-text">Meet the Characters</div>
+    <div class="section-divider-line"></div>
+  </div>
+  <div class="grid-2" style="margin-bottom:28px;">
+    <div class="char-card char-ada">
+      <div class="char-name">Engineer</div>
+      <div class="char-role">Ada</div>
+      <div class="char-desc">Senior Software Engineer at PaySwift. 5 years building fintech products. Works across frontend, backend, database, and APIs. <strong>Your instructor plays Ada</strong> — drawing the engineering flow live at each phase.</div>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <div class="pm-doc-pill" style="background:rgba(133,56,255,0.08);border-color:rgba(133,56,255,0.25);color:var(--purple);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          React Native
+        </div>
+        <div class="pm-doc-pill" style="background:rgba(133,56,255,0.08);border-color:rgba(133,56,255,0.25);color:var(--purple);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>
+          PostgreSQL
+        </div>
+        <div class="pm-doc-pill" style="background:rgba(133,56,255,0.08);border-color:rgba(133,56,255,0.25);color:var(--purple);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Node.js / APIs
+        </div>
+      </div>
+    </div>
+    <div class="char-card char-morgan">
+      <div class="char-name">Product Manager</div>
+      <div class="char-role">Morgan</div>
+      <div class="char-desc">Product Manager at PaySwift. Manages the payments product. Works closely with Ada to define requirements and ensure the feature meets user and business needs. <strong>This is your role — the class decides what Morgan does at every phase.</strong></div>
+      <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;">
+        <div class="pm-doc-pill" style="background:rgba(255,107,0,0.08);border-color:rgba(255,107,0,0.25);color:var(--orange);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          PRD
+        </div>
+        <div class="pm-doc-pill" style="background:rgba(255,107,0,0.08);border-color:rgba(255,107,0,0.25);color:var(--orange);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          Figma
+        </div>
+        <div class="pm-doc-pill" style="background:rgba(255,107,0,0.08);border-color:rgba(255,107,0,0.25);color:var(--orange);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Metrics
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase nav -->
+  <div class="section-divider">
+    <div class="section-divider-line"></div>
+    <div class="section-divider-text">6 Phases</div>
+    <div class="section-divider-line"></div>
+  </div>
+  <div class="phases-row">
+    <a class="phase-pill" data-page="phase1" href="#"><div class="p-num">1</div>Project Kickoff</a>
+    <a class="phase-pill" data-page="phase2" href="#"><div class="p-num">2</div>Frontend</a>
+    <a class="phase-pill" data-page="phase3" href="#"><div class="p-num">3</div>Backend</a>
+    <a class="phase-pill" data-page="phase4" href="#"><div class="p-num">4</div>Database</a>
+    <a class="phase-pill" data-page="phase5" href="#"><div class="p-num">5</div>Security</a>
+    <a class="phase-pill" data-page="phase6" href="#"><div class="p-num">6</div>API Integration</a>
+  </div>
+</section>
+
+<!-- ══ PAGE: HOW TO USE ══ -->
+<section class="page" id="page-howto">
+  <div class="page-header">
+    <div class="page-tag">Guide</div>
+    <h1 class="page-title">How to Use<br>This Simulation</h1>
+    <p class="page-subtitle">Created for Treford PM students — here's how to get the most out of each phase</p>
+  </div>
+  <div class="grid-2" style="gap:28px;">
+    <div class="card">
+      <div class="card-title">
+        <div class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        Step-by-Step Flow
+      </div>
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <div>
+          <div class="how-text">Instructor opens each Phase page</div>
+          <div class="how-sub">Ada's engineering steps are shown with tool snapshots and task breakdown</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <div>
+          <div class="how-text">Class contributes — "Your Turn" section</div>
+          <div class="how-sub">What does Morgan (the PM) need to do while Ada builds? Class shouts answers, instructor writes on board</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <div>
+          <div class="how-text">Reveal — PM's actual role</div>
+          <div class="how-sub">The PM Roles section shows the docs, tools, decisions and systems Morgan puts in place</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">4</div>
+        <div>
+          <div class="how-text">Discuss bottlenecks</div>
+          <div class="how-sub">Each phase ends with potential blockers to watch out for in real product work</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px;">
+      <div class="card card-lime">
+        <div class="card-title">
+          <div class="icon-circle" style="background:var(--navy);">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          For Participants
+        </div>
+        <ul class="step-list">
+          <li class="step-item"><div class="step-num">→</div><span>Read the phase intro — what is Ada building?</span></li>
+          <li class="step-item"><div class="step-num">→</div><span>Discuss the "Your Turn" questions before the reveal</span></li>
+          <li class="step-item"><div class="step-num">→</div><span>Compare your answers with the PM Roles section</span></li>
+          <li class="step-item"><div class="step-num">→</div><span>Note: No engineering knowledge needed — think product!</span></li>
+        </ul>
+      </div>
+      <div class="card card-navy">
+        <div class="card-title">
+          <div class="icon-circle" style="background:var(--lime);">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke="var(--navy)"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          For Instructors
+        </div>
+        <ul class="step-list">
+          <li class="step-item" style="color:#fff;"><div class="step-num orange">→</div><span>Use a projector — navigate via the sidebar</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num orange">→</div><span>Pause at "Your Turn" — let the class contribute first</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num orange">→</div><span>Draw Ada's work on the whiteboard alongside the site</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num orange">→</div><span>Bottlenecks section is great for real-world discussion</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAGE: PHASE 1 ══ -->
+<section class="page" id="page-phase1">
+  <div class="page-header">
+    <div class="page-tag navy">Phase 1</div>
+    <h1 class="page-title">Project Kickoff</h1>
+    <p class="page-subtitle">Ada reads the brief and breaks down what needs to be built. Morgan has already been busy.</p>
+  </div>
+
+  <div class="phase-intro">
+    <!-- Ada's tasks -->
+    <div class="card">
+      <div class="card-title">
+        <div class="icon-circle" style="background:var(--purple);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        Ada's Engineering Tasks
+      </div>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><span>Read Morgan's PRD and understand the full scope</span></li>
+        <li class="step-item"><div class="step-num">2</div><span>Break the feature into 5 technical layers: Frontend, Backend, Database, APIs, Security</span></li>
+        <li class="step-item"><div class="step-num">3</div><span>Estimate timeline: <strong>6 weeks to build</strong></span></li>
+        <li class="step-item"><div class="step-num">4</div><span>Identify tech stack: React Native, Node.js, PostgreSQL, Redis</span></li>
+        <li class="step-item"><div class="step-num">5</div><span>Create technical spec document outlining architecture</span></li>
+      </ul>
+    </div>
+    <!-- Tool snapshot: GitHub -->
+    <div>
+      <div style="font-size:0.62rem;font-family:'Space Mono',monospace;color:rgba(26,26,94,0.45);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Tool in use — GitHub</div>
+      <div class="tool-snapshot">
+        <div class="tool-bar">
+          <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+          <div class="tool-name">github.com / payswift / p2p-transfer</div>
+        </div>
+        <div class="tool-body">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div class="gh-commit-badge">main</div>
+            <span style="font-size:0.65rem;color:#888;">Initial project scaffold — 2 hours ago</span>
+          </div>
+          <div class="gh-row"><div class="gh-folder"></div><div class="gh-text">frontend</div><div class="gh-time">2h ago</div></div>
+          <div class="gh-row"><div class="gh-folder"></div><div class="gh-text">backend</div><div class="gh-time">2h ago</div></div>
+          <div class="gh-row"><div class="gh-folder"></div><div class="gh-text">database / migrations</div><div class="gh-time">2h ago</div></div>
+          <div class="gh-row"><div class="gh-file"></div><div class="gh-text">README.md</div><div class="gh-time">2h ago</div></div>
+          <div class="gh-row"><div class="gh-file"></div><div class="gh-text">TECH_SPEC.md</div><div class="gh-time">1h ago</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- YOUR TURN -->
+  <div class="your-turn" style="margin-bottom:24px;">
+    <div class="your-turn-label"><div class="pulse"></div>Class Activity — Your Turn</div>
+    <div class="your-turn-q" data-phase="phase1"><div class="your-turn-q-inner"><div class="click-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg> Click to discuss</div><div class="your-turn-q-text">What does Morgan do BEFORE Ada writes a single line of code?</div></div></div>
+  </div>
+
+  <!-- PM ROLES REVEAL -->
+  <button class="pm-toggle-btn" aria-expanded="false">
+    <div class="toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    Reveal — PM's Role · Phase 1
+    <div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+  </button>
+  <div class="pm-collapsible">
+    <div class="pm-section" style="margin-bottom:24px;">
+    <div class="pm-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      PM's Role — Phase 1
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Documents Morgan creates</div>
+      <div style="display:flex;flex-wrap:wrap;">
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Product Requirements Document (PRD)</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Success Metrics</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Project Roadmap</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Stakeholder Brief</div>
+      </div>
+    </div>
+    <div class="grid-2" style="gap:16px;">
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Tools Morgan uses</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(255,107,0,0.15);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>Notion / Confluence — PRD writing</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(205,255,0,0.12);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--lime)" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>Linear / Jira — Roadmap & sprint planning</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(173,232,244,0.2);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="#ADE8F4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>Slides / Loom — Stakeholder alignment</div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Key decisions Morgan makes</div>
+        <ul class="step-list">
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Scope — what's in v1 and what's deferred</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Business rules — transaction limits ₦100–₦1M, fees, 24/7 uptime</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Timeline — negotiate 6 weeks with stakeholders</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Success metrics — 10k txns/day, &lt;3 sec, &lt;0.1% failure</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Bottlenecks -->
+  <div class="grid-2" style="gap:16px;">
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">Vague PRD = blocked engineers</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">If Morgan doesn't specify the transaction limits, fee structure, or compliance rules clearly, Ada will make assumptions — and those assumptions may need to be rebuilt later at significant cost.</div>
+    </div>
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">Timeline misalignment</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">If stakeholders expect 4 weeks and Ada says 6, Morgan must negotiate — not pressure the engineer. Cutting scope is safer than cutting quality in a fintech product.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAGE: PHASE 2 ══ -->
+<section class="page" id="page-phase2">
+  <div class="page-header">
+    <div class="page-tag navy">Phase 2</div>
+    <h1 class="page-title">Building the Frontend</h1>
+    <p class="page-subtitle">Ada builds what users see and touch. Every screen, input field, and error message.</p>
+  </div>
+
+  <div class="phase-intro">
+    <div class="card">
+      <div class="card-title">
+        <div class="icon-circle" style="background:var(--purple);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        </div>
+        Ada's Engineering Tasks
+      </div>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><span>Build <strong>SendMoneyScreen</strong> — input form, recipient search, amount field</span></li>
+        <li class="step-item"><div class="step-num">2</div><span>Build <strong>ConfirmationModal</strong> — transaction summary, PIN entry, confirm button</span></li>
+        <li class="step-item"><div class="step-num">3</div><span>Build <strong>SuccessScreen</strong> — success animation, transaction ID, receipt option</span></li>
+        <li class="step-item"><div class="step-num">4</div><span>Add frontend validation — amount ≥ ₦100, ≤ ₦1M, balance check, note max 100 chars</span></li>
+        <li class="step-item"><div class="step-num">5</div><span>Connect screens to API endpoints using React Native + Axios</span></li>
+      </ul>
+    </div>
+    <!-- Figma mockup -->
+    <div>
+      <div style="font-size:0.62rem;font-family:'Space Mono',monospace;color:rgba(26,26,94,0.45);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Tool in use — Figma (Design handoff)</div>
+      <div class="tool-snapshot">
+        <div class="tool-bar" style="background:#1e1e1e;">
+          <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+          <div class="tool-name" style="color:rgba(255,255,255,0.5);">Figma — PaySwift / Send Money Flow</div>
+        </div>
+        <div class="tool-body" style="background:#2c2c2c;padding:14px;">
+          <div class="figma-label" style="color:rgba(255,255,255,0.4);">Send Money — Screen 1 of 3</div>
+          <div class="figma-frame" style="border-color:#444;background:#1a1a1a;">
+            <div class="figma-screen" style="background:var(--navy);max-width:160px;margin:0 auto;">
+              <div class="figma-bar" style="background:rgba(255,255,255,0.15);width:40%;"></div>
+              <div style="font-size:0.55rem;color:rgba(255,255,255,0.4);font-family:'Space Mono',monospace;margin:4px 0 2px;">RECIPIENT</div>
+              <div class="figma-input"></div>
+              <div style="font-size:0.55rem;color:rgba(255,255,255,0.4);font-family:'Space Mono',monospace;margin:4px 0 2px;">AMOUNT (₦)</div>
+              <div class="figma-input"></div>
+              <div style="font-size:0.55rem;color:rgba(255,255,255,0.4);font-family:'Space Mono',monospace;margin:4px 0 2px;">NOTE</div>
+              <div class="figma-input" style="height:30px;"></div>
+              <div class="figma-btn" style="background:var(--lime);margin-top:8px;"></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:6px;">
+            <div style="flex:1;height:6px;background:#444;border-radius:3px;"></div>
+            <div style="flex:1;height:6px;background:#CDFF00;opacity:0.6;border-radius:3px;"></div>
+            <div style="flex:1;height:6px;background:#444;border-radius:3px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="your-turn" style="margin-bottom:24px;">
+    <div class="your-turn-label"><div class="pulse"></div>Class Activity — Your Turn</div>
+    <div class="your-turn-q" data-phase="phase2"><div class="your-turn-q-inner"><div class="click-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg> Click to discuss</div><div class="your-turn-q-text">What does Morgan need to provide for Ada to build these screens?</div></div></div>
+  </div>
+
+  <button class="pm-toggle-btn" aria-expanded="false">
+    <div class="toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    Reveal — PM's Role · Phase 2
+    <div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+  </button>
+  <div class="pm-collapsible">
+    <div class="pm-section" style="margin-bottom:24px;">
+    <div class="pm-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      PM's Role — Phase 2
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Documents & Deliverables</div>
+      <div style="display:flex;flex-wrap:wrap;">
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>User Flow Document</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="16" x2="11" y2="16"/></svg>Screen Copy Document</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Validation Rules</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Error Messages Spec</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Figma Wireframes (approved)</div>
+      </div>
+    </div>
+    <div class="grid-2" style="gap:16px;">
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Tools Morgan uses</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(255,107,0,0.15);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>Figma — Review and approve wireframes before dev</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(205,255,0,0.12);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--lime)" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>Notion — Screen copy and validation rules</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(173,232,244,0.2);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="#ADE8F4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>Slack — Answer Ada's implementation questions daily</div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">What Morgan defines</div>
+        <ul class="step-list">
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Every screen's content — labels, placeholders, helper text</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Validation rules: min ₦100, max ₦1M, balance check, 100-char note</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Error messages — clear, friendly, and actionable</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Success state — what does the user see after sending ₦5,000?</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="grid-2" style="gap:16px;">
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">Missing error message specs</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">If Morgan doesn't define what users see when their PIN is wrong or their balance is too low, Ada will write placeholder text — which ships to production unchanged and confuses real users.</div>
+    </div>
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">Designs not approved before dev starts</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">Engineers building from unapproved wireframes is a major risk. Morgan must review and sign off on Figma designs before Ada writes any frontend code.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAGE: PHASE 3 ══ -->
+<section class="page" id="page-phase3">
+  <div class="page-header">
+    <div class="page-tag navy">Phase 3</div>
+    <h1 class="page-title">Building the Backend</h1>
+    <p class="page-subtitle">When the user taps "Confirm Transfer," here's what happens behind the scenes.</p>
+  </div>
+
+  <div class="phase-intro">
+    <div class="card">
+      <div class="card-title">
+        <div class="icon-circle" style="background:var(--purple);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        Ada's Engineering Tasks
+      </div>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><span><strong>Auth Service:</strong> Verify JWT token → check PIN → verify session not expired</span></li>
+        <li class="step-item"><div class="step-num">2</div><span><strong>Validation Service:</strong> Check sender active, recipient active, amount ≥ ₦100 ≤ ₦1M, daily limit not exceeded</span></li>
+        <li class="step-item"><div class="step-num">3</div><span><strong>Transaction Service:</strong> Lock wallets → debit sender → credit recipient → create record → COMMIT</span></li>
+        <li class="step-item"><div class="step-num">4</div><span><strong>Notification Service:</strong> Push to sender, push to recipient, queue email receipts</span></li>
+        <li class="step-item"><div class="step-num">5</div><span><strong>Response:</strong> Return success + transactionId to frontend</span></li>
+      </ul>
+    </div>
+    <!-- Postman mockup -->
+    <div>
+      <div style="font-size:0.62rem;font-family:'Space Mono',monospace;color:rgba(26,26,94,0.45);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Tool in use — Postman (API testing)</div>
+      <div class="tool-snapshot">
+        <div class="tool-bar" style="background:#2d2d2d;">
+          <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+          <div class="tool-name">Postman — PaySwift API Collection</div>
+        </div>
+        <div class="tool-body">
+          <div class="pm-row"><span class="pm-method pm-post">POST</span><span class="pm-url">/api/v1/transactions/transfer</span><span class="pm-status-ok">200 OK</span></div>
+          <div class="pm-row"><span class="pm-method pm-get">GET</span><span class="pm-url">/api/v1/wallets/balance</span><span class="pm-status-ok">200 OK</span></div>
+          <div class="pm-row"><span class="pm-method pm-get">GET</span><span class="pm-url">/api/v1/users/search?q=john</span><span class="pm-status-ok">200 OK</span></div>
+          <div class="pm-row"><span class="pm-method pm-post">POST</span><span class="pm-url">/api/v1/auth/verify-pin</span><span style="color:#E84855;font-size:0.62rem;font-family:'Space Mono',monospace;font-weight:700;margin-left:auto;">401</span></div>
+          <div style="margin-top:10px;padding:8px;background:#f9f9f9;border-radius:6px;font-family:'Space Mono',monospace;font-size:0.6rem;color:#333;line-height:1.6;">{"status":"success",<br>"transactionId":"TXN_88a2c1",<br>"newBalance":45000}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="your-turn" style="margin-bottom:24px;">
+    <div class="your-turn-label"><div class="pulse"></div>Class Activity — Your Turn</div>
+    <div class="your-turn-q" data-phase="phase3"><div class="your-turn-q-inner"><div class="click-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg> Click to discuss</div><div class="your-turn-q-text">What rules and policies must Morgan have defined for Ada to build this?</div></div></div>
+  </div>
+
+  <button class="pm-toggle-btn" aria-expanded="false">
+    <div class="toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    Reveal — PM's Role · Phase 3
+    <div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+  </button>
+  <div class="pm-collapsible">
+    <div class="pm-section" style="margin-bottom:24px;">
+    <div class="pm-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      PM's Role — Phase 3
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Documents & Deliverables</div>
+      <div style="display:flex;flex-wrap:wrap;">
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Business Rules Document</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Error Scenarios Document</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Notification Copy</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Fee & Limits Policy</div>
+      </div>
+    </div>
+    <div class="grid-2" style="gap:16px;">
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Tools Morgan uses</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(255,107,0,0.15);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>Confluence — Business rules documentation</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(205,255,0,0.12);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--lime)" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>Mixpanel — Define what events to track</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(173,232,244,0.2);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="#ADE8F4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>Braze / OneSignal — Define notification triggers</div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">What Morgan defines</div>
+        <ul class="step-list">
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Transaction limits: ₦100 min, ₦1,000,000 max</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Fee structure — flat fee, percentage, or zero?</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Daily transfer limit per user</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>All notification copy — sender + receiver messages</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Error messages for all failure states</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="grid-2" style="gap:16px;">
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">Undefined fee structure</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">Ada needs to know: does the sender pay a fee? If so, how is it calculated? This is a business decision, not a technical one — and it must come from Morgan before backend coding begins.</div>
+    </div>
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">No rollback plan defined</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">If a transaction fails mid-way (network drop, server error), what happens to the user's money? Morgan must define the recovery policy before Ada can implement safe rollback behaviour.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAGE: PHASE 4 ══ -->
+<section class="page" id="page-phase4">
+  <div class="page-header">
+    <div class="page-tag navy">Phase 4</div>
+    <h1 class="page-title">Database & Data Flow</h1>
+    <p class="page-subtitle">Ada designs the memory of the product — every user, wallet, and transaction stored safely.</p>
+  </div>
+
+  <div class="phase-intro">
+    <div class="card">
+      <div class="card-title">
+        <div class="icon-circle" style="background:var(--purple);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/></svg>
+        </div>
+        Ada's Engineering Tasks
+      </div>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><span>Design PostgreSQL schema: <strong>USERS</strong>, <strong>WALLETS</strong>, <strong>TRANSACTIONS</strong> tables</span></li>
+        <li class="step-item"><div class="step-num">2</div><span>Implement ACID-compliant transaction processing with row-level locking</span></li>
+        <li class="step-item"><div class="step-num">3</div><span>Write transaction flow: START → LOCK → VALIDATE → DEBIT → CREDIT → COMMIT (or ROLLBACK)</span></li>
+        <li class="step-item"><div class="step-num">4</div><span>Set up Redis cache for fast balance lookups</span></li>
+        <li class="step-item"><div class="step-num">5</div><span>Configure automated backups and disaster recovery</span></li>
+      </ul>
+    </div>
+    <!-- DB mockup -->
+    <div>
+      <div style="font-size:0.62rem;font-family:'Space Mono',monospace;color:rgba(26,26,94,0.45);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Tool in use — pgAdmin (Database)</div>
+      <div class="tool-snapshot">
+        <div class="tool-bar">
+          <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+          <div class="tool-name">pgAdmin — payswift_db</div>
+        </div>
+        <div class="tool-body">
+          <div class="db-table">
+            <div class="db-thead"><div class="db-thead-text">TRANSACTIONS</div></div>
+            <div class="db-row"><div class="db-cell key">id</div><div class="db-cell">UUID</div><div class="db-cell">PRIMARY KEY</div></div>
+            <div class="db-row"><div class="db-cell key">sender_id</div><div class="db-cell">UUID</div><div class="db-cell">→ USERS</div></div>
+            <div class="db-row"><div class="db-cell key">recipient_id</div><div class="db-cell">UUID</div><div class="db-cell">→ USERS</div></div>
+            <div class="db-row"><div class="db-cell">amount</div><div class="db-cell">BIGINT</div><div class="db-cell">in kobo</div></div>
+            <div class="db-row"><div class="db-cell">status</div><div class="db-cell">ENUM</div><div class="db-cell">success/fail</div></div>
+          </div>
+          <div style="font-size:0.62rem;font-family:'Space Mono',monospace;color:var(--green);padding:4px 0;">✓ ACID compliant  ✓ Row locking enabled</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="your-turn" style="margin-bottom:24px;">
+    <div class="your-turn-label"><div class="pulse"></div>Class Activity — Your Turn</div>
+    <div class="your-turn-q" data-phase="phase4"><div class="your-turn-q-inner"><div class="click-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg> Click to discuss</div><div class="your-turn-q-text">What data requirements must Morgan have defined before Ada designs this schema?</div></div></div>
+  </div>
+
+  <button class="pm-toggle-btn" aria-expanded="false">
+    <div class="toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    Reveal — PM's Role · Phase 4
+    <div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+  </button>
+  <div class="pm-collapsible">
+    <div class="pm-section" style="margin-bottom:24px;">
+    <div class="pm-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      PM's Role — Phase 4
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Documents & Deliverables</div>
+      <div style="display:flex;flex-wrap:wrap;">
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Data Requirements Document</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Data Retention Policy</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Privacy & Compliance Brief</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Analytics Event Tracking Plan</div>
+      </div>
+    </div>
+    <div class="grid-2" style="gap:16px;">
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Tools Morgan uses</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(255,107,0,0.15);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>Mixpanel / Amplitude — Define tracked events</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(205,255,0,0.12);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--lime)" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>Spreadsheets — Data dictionary & field mapping</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(173,232,244,0.2);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="#ADE8F4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>Compliance docs — NDPR / CBN guidelines</div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">What Morgan defines</div>
+        <ul class="step-list">
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Which data fields are required by the business</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>How long transaction records must be kept (regulatory)</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>What users can request deleted vs. what must be retained</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Analytics events to instrument for product metrics</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Backup frequency and disaster recovery SLA</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="grid-2" style="gap:16px;">
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">Schema changes after launch = expensive</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">Adding a column to a production database with millions of rows is a high-risk, time-consuming migration. Morgan must get the data requirements right before the first deploy — not after.</div>
+    </div>
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">Compliance overlooked until audit</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">The CBN and NDPR have strict requirements for financial data retention in Nigeria. If Morgan doesn't factor these in early, the product may need costly refactoring to pass a regulatory audit.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAGE: PHASE 5 ══ -->
+<section class="page" id="page-phase5">
+  <div class="page-header">
+    <div class="page-tag navy">Phase 5</div>
+    <h1 class="page-title">Security Implementation</h1>
+    <p class="page-subtitle">Ada layers in protection — encryption, authentication, fraud detection. All 5 layers at once.</p>
+  </div>
+
+  <div class="phase-intro">
+    <div class="card">
+      <div class="card-title">
+        <div class="icon-circle" style="background:var(--purple);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        Ada's Engineering Tasks
+      </div>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><span><strong>HTTPS/TLS:</strong> SSL cert, force HTTPS, strong cipher suites. Without it — anyone on WiFi sees your PIN</span></li>
+        <li class="step-item"><div class="step-num">2</div><span><strong>Authentication:</strong> JWT token generation, PIN hashing with Bcrypt, session expiry</span></li>
+        <li class="step-item"><div class="step-num">3</div><span><strong>Encryption at rest:</strong> AES-256 for bank details, Bcrypt for PINs, encrypted personal data</span></li>
+        <li class="step-item"><div class="step-num">4</div><span><strong>Rate limiting:</strong> Login 5/hr, transfers 10/min, balance checks 60/min, per-IP 100/min</span></li>
+        <li class="step-item"><div class="step-num">5</div><span><strong>Fraud detection:</strong> Risk score engine — new device (+15), unusual time (+5), large amount (+20), multiple recipients (+30)</span></li>
+      </ul>
+    </div>
+    <!-- Sentry mockup -->
+    <div>
+      <div style="font-size:0.62rem;font-family:'Space Mono',monospace;color:rgba(26,26,94,0.45);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Tool in use — Sentry (Monitoring)</div>
+      <div class="tool-snapshot">
+        <div class="tool-bar" style="background:#2d1b3d;">
+          <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+          <div class="tool-name">Sentry — payswift-production</div>
+        </div>
+        <div class="tool-body">
+          <div style="font-size:0.62rem;font-family:'Space Mono',monospace;color:#888;margin-bottom:8px;">Security Events — Last 24h</div>
+          <div class="sentry-event"><span class="sentry-badge badge-ok">OK</span><span>PIN verified — user_8821</span><span style="font-size:0.6rem;color:#aaa;margin-left:auto;">2 min ago</span></div>
+          <div class="sentry-event"><span class="sentry-badge badge-warn">WARN</span><span>3 failed PIN attempts — user_2210</span><span style="font-size:0.6rem;color:#aaa;margin-left:auto;">14 min ago</span></div>
+          <div class="sentry-event"><span class="sentry-badge badge-ok">OK</span><span>Fraud score: 22 — approved</span><span style="font-size:0.6rem;color:#aaa;margin-left:auto;">1h ago</span></div>
+          <div class="sentry-event"><span class="sentry-badge badge-err">BLOCK</span><span>Fraud score: 85 — auto-blocked</span><span style="font-size:0.6rem;color:#aaa;margin-left:auto;">3h ago</span></div>
+          <div class="sentry-event"><span class="sentry-badge badge-warn">HOLD</span><span>Fraud score: 55 — under review</span><span style="font-size:0.6rem;color:#aaa;margin-left:auto;">5h ago</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="your-turn" style="margin-bottom:24px;">
+    <div class="your-turn-label"><div class="pulse"></div>Class Activity — Your Turn</div>
+    <div class="your-turn-q" data-phase="phase5"><div class="your-turn-q-inner"><div class="click-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg> Click to discuss</div><div class="your-turn-q-text">What security policies must Morgan define — before and during this phase?</div></div></div>
+  </div>
+
+  <button class="pm-toggle-btn" aria-expanded="false">
+    <div class="toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    Reveal — PM's Role · Phase 5
+    <div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+  </button>
+  <div class="pm-collapsible">
+    <div class="pm-section" style="margin-bottom:24px;">
+    <div class="pm-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      PM's Role — Phase 5
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Documents & Deliverables</div>
+      <div style="display:flex;flex-wrap:wrap;">
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Security Policy Document</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Fraud Response Playbook</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Compliance Checklist</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>User Communication Templates</div>
+      </div>
+    </div>
+    <div class="grid-2" style="gap:16px;">
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Tools Morgan uses</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(255,107,0,0.15);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>Sentry / Datadog — Monitor security incidents</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(205,255,0,0.12);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--lime)" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>Notion — Security policy & fraud playbook</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(173,232,244,0.2);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="#ADE8F4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>Compliance tracking (CBN, NDPR, PCI-DSS)</div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">What Morgan defines</div>
+        <ul class="step-list">
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>PIN length, biometrics requirements, 2FA rules</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Lockout policy — attempts, duration, unlock method</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Fraud risk thresholds — what triggers hold vs. auto-block</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>All user-facing messages for security events</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Compliance mandates — CBN, NDPR, PCI-DSS applicability</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="grid-2" style="gap:16px;">
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">Security added as an afterthought</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">Security can't be bolted on at the end. Fraud thresholds and lockout policies must be agreed before Ada builds the auth layer — otherwise they become expensive retrofits.</div>
+    </div>
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">No fraud response process</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">When a transaction is flagged, who reviews it? What's the SLA? Without a defined process from Morgan, flagged transactions just pile up — and legitimate transfers get stuck.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAGE: PHASE 6 ══ -->
+<section class="page" id="page-phase6">
+  <div class="page-header">
+    <div class="page-tag navy">Phase 6</div>
+    <h1 class="page-title">API Integration</h1>
+    <p class="page-subtitle">Ada ties it all together — the contract between frontend and backend, live and working.</p>
+  </div>
+
+  <div class="phase-intro">
+    <div class="card">
+      <div class="card-title">
+        <div class="icon-circle" style="background:var(--purple);">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        </div>
+        Ada's Engineering Tasks
+      </div>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><span>Build API Gateway — routing, rate limiting, auth middleware</span></li>
+        <li class="step-item"><div class="step-num">2</div><span>Implement <strong>POST /api/v1/transactions/transfer</strong> — full transfer flow</span></li>
+        <li class="step-item"><div class="step-num">3</div><span>Implement <strong>GET /api/v1/users/search</strong> — recipient search with autocomplete</span></li>
+        <li class="step-item"><div class="step-num">4</div><span>Implement <strong>GET /api/v1/wallets/balance</strong> — real-time balance</span></li>
+        <li class="step-item"><div class="step-num">5</div><span>Write API documentation in Swagger/OpenAPI format</span></li>
+        <li class="step-item"><div class="step-num">6</div><span>Test all endpoints end-to-end in staging environment</span></li>
+      </ul>
+    </div>
+    <!-- Complete flow diagram (text-based) -->
+    <div>
+      <div style="font-size:0.62rem;font-family:'Space Mono',monospace;color:rgba(26,26,94,0.45);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Complete Transfer Flow</div>
+      <div class="card" style="padding:16px;font-family:'Space Mono',monospace;font-size:0.62rem;line-height:1.9;background:#fff;">
+        <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #f5f5f5;"><span style="color:var(--lime);font-weight:700;background:var(--navy);padding:1px 6px;border-radius:3px;font-size:0.58rem;">1</span><span>Frontend validates input → ₦5,000 ≥ ₦100 ✓</span></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #f5f5f5;"><span style="color:var(--lime);font-weight:700;background:var(--navy);padding:1px 6px;border-radius:3px;font-size:0.58rem;">2</span><span>POST /transactions/transfer sent via HTTPS</span></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #f5f5f5;"><span style="color:var(--lime);font-weight:700;background:var(--navy);padding:1px 6px;border-radius:3px;font-size:0.58rem;">3</span><span>Auth service verifies PIN (max 3 attempts)</span></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #f5f5f5;"><span style="color:var(--lime);font-weight:700;background:var(--navy);padding:1px 6px;border-radius:3px;font-size:0.58rem;">4</span><span>Backend checks balance, applies fee</span></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #f5f5f5;"><span style="color:var(--lime);font-weight:700;background:var(--navy);padding:1px 6px;border-radius:3px;font-size:0.58rem;">5</span><span>DB: LOCK → DEBIT → CREDIT → COMMIT</span></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #f5f5f5;"><span style="color:var(--lime);font-weight:700;background:var(--navy);padding:1px 6px;border-radius:3px;font-size:0.58rem;">6</span><span>Fraud score checked → 22pts → approved</span></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #f5f5f5;"><span style="color:var(--lime);font-weight:700;background:var(--navy);padding:1px 6px;border-radius:3px;font-size:0.58rem;">7</span><span>Push notifications sent to both users</span></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:3px 0;"><span style="background:var(--green);color:#fff;font-weight:700;padding:1px 6px;border-radius:3px;font-size:0.58rem;">✓</span><span style="color:var(--green);font-weight:700;">₦5,000 transferred in &lt; 3 seconds</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="your-turn" style="margin-bottom:24px;">
+    <div class="your-turn-label"><div class="pulse"></div>Class Activity — Your Turn</div>
+    <div class="your-turn-q" data-phase="phase6"><div class="your-turn-q-inner"><div class="click-badge"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg> Click to discuss</div><div class="your-turn-q-text">What does Morgan need to define for the API layer to work?</div></div></div>
+  </div>
+
+  <button class="pm-toggle-btn" aria-expanded="false">
+    <div class="toggle-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    Reveal — PM's Role · Phase 6
+    <div class="lock-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+  </button>
+  <div class="pm-collapsible">
+    <div class="pm-section" style="margin-bottom:24px;">
+    <div class="pm-section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      PM's Role — Phase 6
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Documents & Deliverables</div>
+      <div style="display:flex;flex-wrap:wrap;">
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>API Specification (contract)</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Error Code Dictionary</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>UAT Test Plan</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Release Notes</div>
+        <div class="pm-doc-pill"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>Rollout Strategy</div>
+      </div>
+    </div>
+    <div class="grid-2" style="gap:16px;">
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">Tools Morgan uses</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(255,107,0,0.15);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--orange)" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>Amplitude / Mixpanel — Track transfer funnel</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(205,255,0,0.12);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="var(--lime)" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>Notion — API spec & release notes</div>
+        <div class="pm-tool-row"><div class="pm-tool-icon" style="background:rgba(173,232,244,0.2);"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke="#ADE8F4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>TestFlight / Internal builds — UAT testing</div>
+      </div>
+      <div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-bottom:8px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;">What Morgan defines</div>
+        <ul class="step-list">
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>API contract — what data in, what data out, per endpoint</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Performance SLAs — &lt;500ms response, 99.9% uptime</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>User-facing error messages for every error code</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>UAT plan — test cases that cover all user stories</span></li>
+          <li class="step-item" style="color:#fff;"><div class="step-num lime">✓</div><span>Rollout strategy — phased, full launch, or feature flag?</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="grid-2" style="gap:16px;">
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">Skipping UAT before launch</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">Morgan must run User Acceptance Testing before any public launch. Releasing untested code in a payments product can result in real users losing real money — and regulatory consequences.</div>
+    </div>
+    <div class="bottleneck-card">
+      <div class="bottleneck-label"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Bottleneck Watch</div>
+      <div style="font-size:0.8rem;font-weight:700;color:var(--navy);margin-bottom:4px;">No rollback plan at launch</div>
+      <div style="font-size:0.75rem;color:rgba(26,26,94,0.65);line-height:1.5;">Every production launch needs a rollback plan. If the feature breaks after launch, how quickly can the team revert? Morgan must define the kill switch policy before going live.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAGE: ACCREDITATION ══ -->
+<section class="page" id="page-accred">
+  <div class="accred-hero">
+    <div class="deco-shapes">
+      <div class="deco-shape" style="width:200px;height:200px;top:-60px;right:-60px;"></div>
+      <div class="deco-shape" style="width:120px;height:120px;bottom:80px;left:-40px;background:var(--orange);opacity:0.1;"></div>
+      <div class="deco-shape" style="width:60px;height:60px;top:40%;right:10%;background:var(--navy);opacity:0.05;"></div>
+    </div>
+
+    <div class="accred-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="6"/>
+        <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+      </svg>
+    </div>
+
+    <div style="font-size:0.65rem;font-family:'Space Mono',monospace;color:rgba(26,26,94,0.4);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;">Technical Foundations Simulation</div>
+    <div class="accred-title">Created by</div>
+    <div class="accred-name">Sophia Ahuoyiza</div>
+    <div class="accred-sub">Technical Product Management Facilitator</div>
+
+    <a class="accred-link" href="https://linkedin.com/in/sophia-abubakr" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      linkedin.com/in/sophia-abubakr
+    </a>
+
+    <div class="for-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      Created for Treford Students
+    </div>
+
+    <div style="margin-top:32px;padding:20px 28px;background:#fff;border:2.5px solid var(--navy);border-radius:14px;max-width:420px;">
+      <div style="font-size:0.65rem;font-family:'Space Mono',monospace;color:rgba(26,26,94,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">About this simulation</div>
+      <p style="font-size:0.82rem;color:rgba(26,26,94,0.7);line-height:1.65;">This interactive simulation was designed to help aspiring product managers understand how engineering and product work in parallel. It uses a real-world fintech scenario to bridge the gap between technical concepts and PM responsibilities.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══ DISCUSSION MODAL ═══ -->
+<div class="modal-overlay" id="discussModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="modal-phase-tag" id="modalPhaseTag">Phase 1</div>
+    <div class="modal-title" id="modalTitle">Class Discussion</div>
+    <div class="modal-sub" id="modalSub"></div>
+    <hr class="modal-divider">
+    <div class="modal-section-label">What Ada is doing right now</div>
+    <div class="modal-ada-list" id="modalAdaList"></div>
+    <div class="modal-discuss-box">
+      <div class="modal-discuss-label"><div class="pulse"></div>Discuss as a class — what should Morgan be doing?</div>
+      <ul class="modal-q-list" id="modalQuestions"></ul>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+
+</body>
+</html>
+

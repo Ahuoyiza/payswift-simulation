@@ -779,7 +779,7 @@ body {
   border: 2px solid rgba(205,255,0,0.35);
   border-radius: 10px;
   padding: 12px 20px;
-  color: var(--lime);
+  color: var(--navy);
   font-family: 'Nunito', sans-serif;
   font-size: 0.85rem;
   font-weight: 800;
@@ -792,6 +792,7 @@ body {
 .pm-toggle-btn:hover {
   background: rgba(205,255,0,0.2);
   border-color: var(--lime);
+  color: var(--navy);
 }
 .pm-toggle-btn .toggle-icon {
   width: 28px; height: 28px;

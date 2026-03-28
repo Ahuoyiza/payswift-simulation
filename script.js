@@ -222,5 +222,27 @@ document.querySelectorAll('.your-turn-q[data-phase]').forEach(el => {
   el.addEventListener('click', () => openModal(el.dataset.phase));
 });
 
+// ─── MOBILE SIDEBAR TOGGLE ───
+const mobMenuBtn = document.getElementById('mob-menu-btn');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+function openSidebar() {
+  document.body.classList.add('sidebar-open');
+}
+function closeSidebar() {
+  document.body.classList.remove('sidebar-open');
+}
+mobMenuBtn.addEventListener('click', () => {
+  document.body.classList.contains('sidebar-open') ? closeSidebar() : openSidebar();
+});
+sidebarOverlay.addEventListener('click', closeSidebar);
+
+// Close sidebar on nav item click (mobile)
+document.querySelectorAll('.nav-item, .phase-pill').forEach(el => {
+  el.addEventListener('click', () => {
+    if (window.innerWidth <= 768) closeSidebar();
+  });
+});
+
 // Initialize
 navigate('overview');

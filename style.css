@@ -1014,10 +1014,124 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; opacity: 0.3; }
 
+/* ─── MOBILE MENU BUTTON ─── */
+#mob-menu-btn {
+  display: none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 200;
+  width: 42px;
+  height: 42px;
+  background: var(--navy);
+  border: 2px solid rgba(205,255,0,0.5);
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  cursor: pointer !important;
+}
+#mob-menu-btn span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--lime);
+  border-radius: 2px;
+  transition: all 0.25s ease;
+}
+.sidebar-open #mob-menu-btn span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.sidebar-open #mob-menu-btn span:nth-child(2) { opacity: 0; }
+.sidebar-open #mob-menu-btn span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ─── SIDEBAR OVERLAY ─── */
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26,26,94,0.5);
+  backdrop-filter: blur(2px);
+  z-index: 99;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 900px) {
   :root { --sidebar-w: 220px; }
   .page { padding: 32px 28px; }
   .grid-2, .grid-3, .phase-intro { grid-template-columns: 1fr; }
   .overview-hero { grid-template-columns: 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  /* Hide custom cursor on touch */
+  #cursor { display: none; }
+  * { cursor: auto !important; }
+
+  /* Sidebar: off-canvas by default */
+  #sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 150;
+    width: var(--sidebar-w);
+    box-shadow: none;
+  }
+  .sidebar-open #sidebar {
+    transform: translateX(0);
+    box-shadow: 8px 0 32px rgba(26,26,94,0.25);
+  }
+
+  /* Overlay active */
+  #sidebar-overlay {
+    display: block;
+    pointer-events: none;
+  }
+  .sidebar-open #sidebar-overlay {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* Hamburger button visible */
+  #mob-menu-btn { display: flex; }
+
+  /* Main: full width, top padding for hamburger */
+  #main {
+    margin-left: 0;
+  }
+  .page {
+    padding: 72px 20px 32px;
+  }
+
+  /* Typography */
+  .page-title { font-size: 2rem; }
+  .page-subtitle { font-size: 0.9rem; }
+  .accred-title { font-size: 1.7rem; }
+
+  /* All grids collapse to single column */
+  .grid-2, .grid-3, .grid-4, .phase-intro, .overview-hero {
+    grid-template-columns: 1fr;
+  }
+
+  /* Flex rows wrap */
+  .flex-row { flex-wrap: wrap; }
+
+  /* Phase pills wrap nicely */
+  .phases-row { gap: 8px; }
+  .phase-pill { font-size: 0.7rem; padding: 7px 12px; }
+
+  /* Cards */
+  .card { padding: 18px 20px; }
+  .your-turn { padding: 22px 20px; }
+  .pm-section { padding: 22px 20px; }
+  .user-story-box { padding: 22px 20px; }
+
+  /* PM toggle */
+  .pm-toggle-btn { font-size: 0.8rem; padding: 12px 16px; }
+
+  /* Modal */
+  .modal-box { padding: 28px 22px; }
 }
